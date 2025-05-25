@@ -205,14 +205,14 @@ while true; do
 
     if [ "$is_new_container" = "true" ]; then
         echo "Executing setup and play.sh for new container..." | tee -a "$LOG_FILE"
-        run_docker_command "docker exec $CONTAINER_NAME bash -c 'sudo apt update || true && sudo apt install -y git nano xauth && git clone https://github.com/rouhanaom45/inbox-deep /root/inbox-deep && cd /root/inbox-deep && export DISPLAY=:1 && export HOME=/root && export XAUTHORITY=/root/.Xauthority && bash play.sh'" || {
+        run_docker_command "docker exec $CONTAINER_NAME bash -c 'sudo apt update || true && sudo apt install -y git nano xauth && git clone https://github.com/rouhanaom45/out-deep /root/out-deep && cd /root/out-deep && export DISPLAY=:1 && export HOME=/root && export XAUTHORITY=/root/.Xauthority && bash play.sh'" || {
             echo "Error: play.sh failed." | tee -a "$LOG_FILE"
             run_docker_command "docker rm -f $CONTAINER_NAME"
             continue
         }
     else
         echo "Executing starto.sh for existing container..." | tee -a "$LOG_FILE"
-        run_docker_command "docker exec $CONTAINER_NAME bash -c 'cd /root/inbox-deep && source myenv/bin/activate && export DISPLAY=:1 && export HOME=/root && export XAUTHORITY=/root/.Xauthority && bash play.sh'" || {
+        run_docker_command "docker exec $CONTAINER_NAME bash -c 'cd /root/out-deep && source myenv/bin/activate && export DISPLAY=:1 && export HOME=/root && export XAUTHORITY=/root/.Xauthority && bash play.sh'" || {
             echo "Error: play.sh failed." | tee -a "$LOG_FILE"
             run_docker_command "docker rm -f $CONTAINER_NAME"
             continue
