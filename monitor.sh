@@ -14,8 +14,7 @@ MEMORY_THRESHOLD=$((6 * 1024 * 1024 * 1024 + 322122547))  # 6.3 GiB
 
 
 # Runtime threshold (3 hours 58 minutes = 14280 seconds)
-RUNTIME_THRESHOLD=14250
-RUNTIME_LIMIT=1950
+RUNTIME_THRESHOLD=14200
 # Ensure log file directory exists and is writable
 mkdir -p "$(dirname "$LOG_FILE")"
 touch "$LOG_FILE"
@@ -72,14 +71,6 @@ run_stop_script() {
             sleep 60  # Prevent immediate re-trigger
         fi
 
-         # Check Codespace runtime again
-        RUNTIME_SECONDS=$(cat /proc/uptime | awk '{print $1}' | cut -d. -f1)
-        echo "DEBUG: Codespace runtime: $RUNTIME_SECONDS seconds at $(date)" >> "$LOG_FILE"
-        if [ "$RUNTIME_SECONDS" -ge "$RUNTIME_LIMIT" ]; then
-            echo "ALERT: Codespace runtime ($RUNTIME_SECONDS seconds) exceeded threshold at $(date)!" | tee -a "$LOG_FILE"
-            run_stop_script "runtime threshold limit reached"
-            sleep 60  # Prevent immediate re-trigger
-        fi
         
         # Check if failure.txt exists inside the container
         FILE_EXISTENCE=$(docker exec "$CONTAINER_NAME" bash -c '[ -f /root/failure.txt ] && echo "exists" || echo "not_exists"')
