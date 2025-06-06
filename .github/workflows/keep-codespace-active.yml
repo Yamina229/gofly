@@ -60,7 +60,7 @@ jobs:
             RUNNING_MINUTES=$((RUNNING_SECONDS / 60))
             echo "Codespace running for $RUNNING_MINUTES minutes"
             
-            if [ $RUNNING_MINUTES -le 45 ]; then
+            if [ $RUNNING_MINUTES -le 14200 ]; then
               echo "Codespace running for ≤45 minutes. Skipping to sleep."
               echo "SKIP_TO_SLEEP=true" >> $GITHUB_ENV
             else
